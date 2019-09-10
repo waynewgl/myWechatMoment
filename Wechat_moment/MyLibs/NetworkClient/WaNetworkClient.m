@@ -25,7 +25,6 @@
     return manager;
 }
 
-
 #pragma mark - Internal methods
 - (id)initWithBaseURL:(NSURL *)url {
     self = [super initWithBaseURL:url];
