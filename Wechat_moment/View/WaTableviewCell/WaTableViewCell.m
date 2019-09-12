@@ -55,7 +55,9 @@
     
     //content
     self.lb_text = [[UILabel alloc]init];
-    self.lb_text.numberOfLines = 0;
+    self.lb_text.preferredMaxLayoutWidth = (self.contentView.frame.size.width -10.0 * 2);
+    [self.lb_text setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+    self.lb_text.numberOfLines =0;
     self.lb_text.font = [UIFont systemFontOfSize:14];
     [self.contentView addSubview:self.lb_text];
     [self.lb_text mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -111,10 +113,12 @@
     [self.btn_nickname setTitle:[dic_sender objectForKey:@"nick"]?[dic_sender objectForKey:@"nick"] :@"anonymous" forState:UIControlStateNormal];
     [self.imv_avatar setImageWithURL:[NSURL URLWithString:[dic_sender objectForKey:@"avatar"]] placeholderImage:[UIImage imageNamed:@"img_avatar"]];
     self.lb_text.text = moment.content?moment.content:@"No Content";
+    [self.contentView layoutIfNeeded];
     self.lb_location.text = moment.location?moment.location :@"Unknown Place";
     self.lb_time.text = moment.time?moment.time :@"Unknown Time";
     [self setGridImageViewItems:moment.images];
     [self setCommentArea];
+    [self.contentView layoutIfNeeded];
 }
 
 - (void)setCommentArea {
@@ -122,7 +126,9 @@
     for (int i = 0; i < 3; i++) {
         UILabel * lb_comment = [[UILabel alloc] init];
         lb_comment.text = @"21221w2sssddasds21221w2sssddasds21221w2sssddasds21221w2sssddasds21221w2sssddasds";
-        lb_comment.numberOfLines = 0;
+        lb_comment.preferredMaxLayoutWidth = (self.contentView.frame.size.width -10.0 * 2);
+        [lb_comment setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
+        lb_comment.numberOfLines =0;
         lb_comment.backgroundColor = [UIColor lightGrayColor];
         [_v_commentArea addSubview:lb_comment];
         [lb_comment mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -183,14 +189,11 @@
     //TODO: user profile page
 }
 
-// calculate height based on input data
+// calculate height based on input data  - cache height
 - (CGFloat)heightForModel:(WaMoment *)message {
     [self setMoment:message];
-    [self.contentView layoutIfNeeded];
-
     float height = MAX(CGRectGetMaxY(self.imv_avatar.frame), CGRectGetMaxY(self.v_commentArea.frame)); //get last widget frame
-    NSLog(@"getting frame %f -- %@", CGRectGetMaxY(self.lb_text.frame), NSStringFromCGRect(self.contentView.frame));
-    return height;
+    return height + 10;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

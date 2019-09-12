@@ -51,6 +51,7 @@ static NSString *identifier = @"WaTableViewCell";
     }
     self.tbv_moment.delegate = self;
     self.tbv_moment.dataSource = self;
+//    self.tbv_moment.rowHeight = UITableViewAutomaticDimension;
     self.tbv_moment.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
     [self.view addSubview:self.tbv_moment];
     
