@@ -73,7 +73,7 @@
         make.left.equalTo(self.imv_avatar.mas_right).offset(default_offset);
         make.right.equalTo(self.contentView.mas_right).offset(0 - grid_view_offset_right);
     }];
-    
+
     //location
     self.lb_location = [[UILabel alloc]init];
     self.lb_location.font = [UIFont systemFontOfSize:12];
@@ -84,19 +84,18 @@
         make.right.equalTo(self.contentView.mas_right).offset(0 - default_offset);
         make.top.equalTo(self.v_gridView.mas_bottom).offset(default_offset);
     }];
-    
-    
+
+
     //upload time
     self.lb_time = [[UILabel alloc]init];
     self.lb_time.font = [UIFont systemFontOfSize:12];
-    [self.lb_time setTextColor:[UIColor lightGrayColor]];
     [self.contentView addSubview:self.lb_time];
     [self.lb_time mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.imv_avatar.mas_right).offset(default_offset);
         make.right.equalTo(self.contentView.mas_right).offset(0 - default_offset);
         make.top.equalTo(self.lb_location.mas_bottom).offset(default_offset);
     }];
-    
+
     //comment area
     self.v_commentArea = [[UIView alloc]init];
     [self.contentView addSubview:self.v_commentArea];
@@ -114,8 +113,8 @@
     self.lb_text.text = moment.content?moment.content:@"No Content";
     self.lb_location.text = moment.location?moment.location :@"Unknown Place";
     self.lb_time.text = moment.time?moment.time :@"Unknown Time";
-    //[self setGridImageViewItems:moment.images];
-    //[self setCommentArea];
+    [self setGridImageViewItems:moment.images];
+    [self setCommentArea];
 }
 
 - (void)setCommentArea {
@@ -188,8 +187,10 @@
 - (CGFloat)heightForModel:(WaMoment *)message {
     [self setMoment:message];
     [self.contentView layoutIfNeeded];
-    float height = MAX(CGRectGetMaxY(self.imv_avatar.frame), CGRectGetMaxY(self.lb_time.frame)); //get last widget frame
-    return height + 10;
+
+    float height = MAX(CGRectGetMaxY(self.imv_avatar.frame), CGRectGetMaxY(self.v_commentArea.frame)); //get last widget frame
+    NSLog(@"getting frame %f -- %@", CGRectGetMaxY(self.lb_text.frame), NSStringFromCGRect(self.contentView.frame));
+    return height;
 }
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
