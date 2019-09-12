@@ -21,6 +21,7 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, strong) UILabel *lb_location;
 @property (nonatomic, strong) UIButton *btn_nickname;
 @property (nonatomic, strong) UIView *v_gridView;
+@property (nonatomic, strong) UIView *v_commentArea;
 
 @property (nonatomic, strong) WaMoment *moment;
 

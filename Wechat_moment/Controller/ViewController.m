@@ -14,6 +14,7 @@
 #import "WaUser.h"
 #import "UIImageView+Cache.h"
 #import "MJRefresh.h"
+#import "SVProgressHUD.h"
 
 static NSString *identifier = @"WaTableViewCell";
 
@@ -41,8 +42,6 @@ static NSString *identifier = @"WaTableViewCell";
     [self loadUserTweetsWithLoadMore:false];
     
     self.tempCell = [[WaTableViewCell alloc] initWithStyle:0 reuseIdentifier:identifier];
-
-    [self.tbv_moment reloadData];
     // Do any additional setup after loading the view.
 }
 
@@ -52,7 +51,7 @@ static NSString *identifier = @"WaTableViewCell";
     }
     self.tbv_moment.delegate = self;
     self.tbv_moment.dataSource = self;
-    self.tbv_moment.rowHeight = UITableViewAutomaticDimension;
+    self.tbv_moment.tableFooterView = [[UIView alloc]initWithFrame:CGRectZero];
     [self.view addSubview:self.tbv_moment];
     
     [self.tbv_moment mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -65,9 +64,11 @@ static NSString *identifier = @"WaTableViewCell";
     }];
     self.tbv_moment.mj_header.automaticallyChangeAlpha = YES;
     
-//    usually use 'page' or 'size' parameter to load more data,
-//    local simulation is to operate the array...NSMakeRange etc
-//    I hope it is ok to just show the basic idea of it for now.
+    /***
+     usually use 'page' or 'size' parameter to load more data,
+     local simulation is to operate the array...NSMakeRange etc
+     I hope it is ok to just show the basic idea of it for now.
+     ***/
     self.tbv_moment.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
         [self loadUserTweetsWithLoadMore:true];//load more
     }];
@@ -85,7 +86,7 @@ static NSString *identifier = @"WaTableViewCell";
     [self.imv_headerBg mas_makeConstraints:^(MASConstraintMaker *make) {
         make.edges.equalTo(v_header);
     }];
-    
+
     self.imv_avatar = [[UIImageView alloc]init];
     [v_header addSubview:self.imv_avatar];
     [self.imv_avatar mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -106,20 +107,24 @@ static NSString *identifier = @"WaTableViewCell";
         make.height.mas_equalTo(30);
     }];
     
-    [self.tbv_moment.tableHeaderView layoutIfNeeded];
+    [self.tbv_moment layoutIfNeeded];
 }
 
 //request user info
 - (void)loadUserInfo {
+    [SVProgressHUD showWithStatus:@"loading..."];
     [[WaNetworkClient sharedNetworkManager] getUserInfoWithCompletionBlock:^(BOOL isSuccess, NSString *desc, NSString *code, WaUser *user) {
         if(isSuccess) {
             self.lb_userName.text = user.nick;
             [self.imv_avatar setImageWithURL:[NSURL URLWithString:user.avatar] placeholderImage:[UIImage imageNamed:@"img_avatar"]];
             [self.imv_headerBg setImageWithURL:[NSURL URLWithString:user.profile_image] placeholderImage:[UIImage imageNamed:@"img_avatar"]];//link is broken
+            [self.tbv_moment reloadData];
+            [SVProgressHUD dismiss];
         }
         else {
-            //TODO: popup error msg
+            [SVProgressHUD showErrorWithStatus:@"Network error"];
         }
+        
     }];
 }
 
@@ -132,7 +137,7 @@ static NSString *identifier = @"WaTableViewCell";
             [self.tbv_moment reloadData];
         }
         else {
-            //TODO: popup error msg
+            [SVProgressHUD showErrorWithStatus:@"Network error"];
         }
         [self.tbv_moment.mj_header endRefreshing];
     }];

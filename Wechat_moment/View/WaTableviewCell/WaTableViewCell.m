@@ -13,6 +13,7 @@
 
 @implementation WaTableViewCell
 
+
 - (void)awakeFromNib {
     [super awakeFromNib];
     // Initialization code
@@ -39,74 +40,114 @@
     }];
     
     //user name
-    _btn_nickname = [[UIButton alloc] init];
-    _btn_nickname.titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
-    _btn_nickname.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
-    [_btn_nickname setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
-    [_btn_nickname addTarget:self action:@selector(userNameClicked:) forControlEvents:UIControlEventTouchUpInside];
-    [self.contentView addSubview:_btn_nickname];
-    [_btn_nickname mas_makeConstraints:^(MASConstraintMaker *make) {
+    self.btn_nickname = [[UIButton alloc] init];
+    self.btn_nickname.titleLabel.font = [UIFont boldSystemFontOfSize:14.0];
+    self.btn_nickname.contentHorizontalAlignment = UIControlContentHorizontalAlignmentLeft;
+    [self.btn_nickname setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+    [self.btn_nickname addTarget:self action:@selector(userNameClicked:) forControlEvents:UIControlEventTouchUpInside];
+    [self.contentView addSubview:self.btn_nickname];
+    [self.btn_nickname mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.contentView.mas_top);
         make.left.equalTo(self.imv_avatar.mas_right).offset(default_offset);
-        make.width.mas_equalTo(userName_width);
-        make.height.mas_equalTo(userName_height);
+        make.width.mas_greaterThanOrEqualTo(label_width);
+        make.height.mas_equalTo(label_height);
     }];
     
     //content
-    _lb_text = [[UILabel alloc]init];
-    _lb_text.numberOfLines = 0;
-    _lb_text.font = [UIFont systemFontOfSize:14];
-    [self.contentView addSubview:_lb_text];
-    [_lb_text mas_makeConstraints:^(MASConstraintMaker *make) {
+    self.lb_text = [[UILabel alloc]init];
+    self.lb_text.numberOfLines = 0;
+    self.lb_text.font = [UIFont systemFontOfSize:14];
+    [self.contentView addSubview:self.lb_text];
+    [self.lb_text mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.imv_avatar.mas_right).offset(default_offset);
         make.right.equalTo(self.contentView.mas_right).offset(0 - default_offset);
         make.top.equalTo(self.btn_nickname.mas_bottom).offset(default_offset_minor);
     }];
     
     //image gridview
-    _v_gridView = [[UIView alloc] init];
+    self.v_gridView = [[UIView alloc] init];
 //    [_v_gridView setBackgroundColor:[UIColor brownColor]];
-    [self.contentView addSubview:_v_gridView];
-    [_v_gridView mas_remakeConstraints:^(MASConstraintMaker *make) {
+    [self.contentView addSubview:self.v_gridView];
+    [self.v_gridView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.lb_text.mas_bottom).offset(grid_view_offset_top);
         make.left.equalTo(self.imv_avatar.mas_right).offset(default_offset);
         make.right.equalTo(self.contentView.mas_right).offset(0 - grid_view_offset_right);
     }];
     
     //location
-    _lb_location = [[UILabel alloc]init];
-    _lb_location.font = [UIFont systemFontOfSize:12];
-    [_lb_time setTextColor:[UIColor blueColor]];
-    [self.contentView addSubview:_lb_location];
-    [_lb_location mas_makeConstraints:^(MASConstraintMaker *make) {
+    self.lb_location = [[UILabel alloc]init];
+    self.lb_location.font = [UIFont systemFontOfSize:12];
+    [self.lb_location setTextColor:[UIColor grayColor]];
+    [self.contentView addSubview:self.lb_location];
+    [self.lb_location mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.imv_avatar.mas_right).offset(default_offset);
         make.right.equalTo(self.contentView.mas_right).offset(0 - default_offset);
         make.top.equalTo(self.v_gridView.mas_bottom).offset(default_offset);
     }];
     
+    
     //upload time
-    _lb_time = [[UILabel alloc]init];
-    _lb_time.font = [UIFont systemFontOfSize:12];
-    [_lb_time setTextColor:[UIColor lightGrayColor]];
-    [self.contentView addSubview:_lb_time];
-    [_lb_time mas_makeConstraints:^(MASConstraintMaker *make) {
+    self.lb_time = [[UILabel alloc]init];
+    self.lb_time.font = [UIFont systemFontOfSize:12];
+    [self.lb_time setTextColor:[UIColor lightGrayColor]];
+    [self.contentView addSubview:self.lb_time];
+    [self.lb_time mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.imv_avatar.mas_right).offset(default_offset);
         make.right.equalTo(self.contentView.mas_right).offset(0 - default_offset);
         make.top.equalTo(self.lb_location.mas_bottom).offset(default_offset);
+    }];
+    
+    //comment area
+    self.v_commentArea = [[UIView alloc]init];
+    [self.contentView addSubview:self.v_commentArea];
+    [self.v_commentArea mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.imv_avatar.mas_right).offset(default_offset);
+        make.right.equalTo(self.contentView.mas_right).offset(0 - default_offset);
+        make.top.equalTo(self.lb_time.mas_bottom).offset(default_offset);
     }];
 }
 
 - (void)setMoment:(WaMoment *)moment {
     NSDictionary *dic_sender = moment.sender;
-    [_btn_nickname setTitle:[dic_sender objectForKey:@"nick"]?[dic_sender objectForKey:@"nick"] :@"anonymous" forState:UIControlStateNormal];
-    [_imv_avatar setImageWithURL:[NSURL URLWithString:[dic_sender objectForKey:@"avatar"]] placeholderImage:[UIImage imageNamed:@"img_avatar"]];
-    _lb_text.text = moment.content?moment.content:@"No Content";
-    _lb_location.text = moment.location?moment.location :@"Unknown Place";
-    _lb_time.text = moment.time?moment.time :@"Unknown Time";
-    [self setGridViewItems:moment.images];
+    [self.btn_nickname setTitle:[dic_sender objectForKey:@"nick"]?[dic_sender objectForKey:@"nick"] :@"anonymous" forState:UIControlStateNormal];
+    [self.imv_avatar setImageWithURL:[NSURL URLWithString:[dic_sender objectForKey:@"avatar"]] placeholderImage:[UIImage imageNamed:@"img_avatar"]];
+    self.lb_text.text = moment.content?moment.content:@"No Content";
+    self.lb_location.text = moment.location?moment.location :@"Unknown Place";
+    self.lb_time.text = moment.time?moment.time :@"Unknown Time";
+    //[self setGridImageViewItems:moment.images];
+    //[self setCommentArea];
 }
 
-- (void)setGridViewItems:(NSArray *)arr_items {
+- (void)setCommentArea {
+    UILabel * lb_lastOne;
+    for (int i = 0; i < 3; i++) {
+        UILabel * lb_comment = [[UILabel alloc] init];
+        lb_comment.text = @"21221w2sssddasds21221w2sssddasds21221w2sssddasds21221w2sssddasds21221w2sssddasds";
+        lb_comment.numberOfLines = 0;
+        lb_comment.backgroundColor = [UIColor lightGrayColor];
+        [_v_commentArea addSubview:lb_comment];
+        [lb_comment mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.mas_equalTo (self.v_commentArea.mas_left);
+            make.right.mas_equalTo (self.v_commentArea.mas_right);
+            if(i == 0) {
+                make.top.equalTo(self.v_commentArea.mas_top).offset(10);
+            }
+            else {
+                make.top.equalTo(lb_lastOne ? lb_lastOne.mas_bottom: @0).offset(10);
+            }
+        }];
+        lb_lastOne = lb_comment;
+        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+            NSLog(@"=======%d___%@",i,lb_lastOne);
+        });
+    }
+    
+    [self.v_commentArea mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(lb_lastOne.mas_bottom);
+    }];
+}
+
+- (void)setGridImageViewItems:(NSArray *)arr_items {
     int itemCount = grid_item_row_count;//num of items in each line
     CGFloat h_space = horizontal_space;//horizontal space
     CGFloat v_space = vertical_space;//vertical space
@@ -140,14 +181,14 @@
 }
 
 - (void)userNameClicked:(UIButton *)sender {
-    NSLog(@"clicked");
+    //TODO: user profile page
 }
 
 // calculate height based on input data
 - (CGFloat)heightForModel:(WaMoment *)message {
     [self setMoment:message];
     [self.contentView layoutIfNeeded];
-    float height =  MAX(CGRectGetMaxY(self.imv_avatar.frame), CGRectGetMaxY(self.lb_time.frame)); //get last widget frame
+    float height = MAX(CGRectGetMaxY(self.imv_avatar.frame), CGRectGetMaxY(self.lb_time.frame)); //get last widget frame
     return height + 10;
 }
 
