@@ -76,6 +76,16 @@
         make.right.equalTo(self.contentView.mas_right).offset(0 - grid_view_offset_right);
     }];
 
+    //comment area
+    self.v_commentArea = [[UIView alloc]init];
+    [self.v_commentArea setBackgroundColor:[UIColor colorWithRed:220.0f/255.0f green:220.0f/255.0f blue:220.0f/255.0f alpha:0.8]];
+    [self.contentView addSubview:self.v_commentArea];
+    [self.v_commentArea mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.imv_avatar.mas_right).offset(default_offset);
+        make.right.equalTo(self.contentView.mas_right).offset(0 - default_offset);
+        make.top.equalTo(self.v_gridView.mas_bottom).offset(default_offset);
+    }];
+    
     //location
     self.lb_location = [[UILabel alloc]init];
     self.lb_location.font = [UIFont systemFontOfSize:12];
@@ -84,10 +94,10 @@
     [self.lb_location mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.imv_avatar.mas_right).offset(default_offset);
         make.right.equalTo(self.contentView.mas_right).offset(0 - default_offset);
-        make.top.equalTo(self.v_gridView.mas_bottom).offset(default_offset);
+        make.top.equalTo(self.v_commentArea.mas_bottom).offset(default_offset);
     }];
-
-
+    
+    
     //upload time
     self.lb_time = [[UILabel alloc]init];
     self.lb_time.font = [UIFont systemFontOfSize:12];
@@ -97,15 +107,6 @@
         make.right.equalTo(self.contentView.mas_right).offset(0 - default_offset);
         make.top.equalTo(self.lb_location.mas_bottom).offset(default_offset);
     }];
-
-    //comment area
-    self.v_commentArea = [[UIView alloc]init];
-    [self.contentView addSubview:self.v_commentArea];
-    [self.v_commentArea mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.imv_avatar.mas_right).offset(default_offset);
-        make.right.equalTo(self.contentView.mas_right).offset(0 - default_offset);
-        make.top.equalTo(self.lb_time.mas_bottom).offset(default_offset);
-    }];
 }
 
 - (void)setMoment:(WaMoment *)moment {
@@ -114,10 +115,10 @@
     [self.imv_avatar setImageWithURL:[NSURL URLWithString:[dic_sender objectForKey:@"avatar"]] placeholderImage:[UIImage imageNamed:@"img_avatar"]];
     self.lb_text.text = moment.content?moment.content:@"No Content";
     [self.contentView layoutIfNeeded];
-    self.lb_location.text = moment.location?moment.location :@"Unknown Place";
-    self.lb_time.text = moment.time?moment.time :@"Unknown Time";
     [self setGridImageViewItems:moment.images];
     [self setCommentArea];
+    self.lb_location.text = moment.location?moment.location :@"Unknown Location";
+    self.lb_time.text = moment.time?moment.time :@"Unknown Time";
     [self.contentView layoutIfNeeded];
 }
 
@@ -126,14 +127,13 @@
     for (int i = 0; i < 3; i++) {
         UILabel * lb_comment = [[UILabel alloc] init];
         lb_comment.text = @"21221w2sssddasds21221w2sssddasds21221w2sssddasds21221w2sssddasds21221w2sssddasds";
-        lb_comment.preferredMaxLayoutWidth = (self.contentView.frame.size.width -10.0 * 2);
-        [lb_comment setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
         lb_comment.numberOfLines =0;
-        lb_comment.backgroundColor = [UIColor lightGrayColor];
+        [lb_comment setTextColor:[UIColor colorWithRed:54.0f/255.0f green:54.0f/255.0f blue:54.0f/255.0f alpha:1.0]];
+        lb_comment.font = [UIFont systemFontOfSize:14];
         [_v_commentArea addSubview:lb_comment];
         [lb_comment mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.mas_equalTo (self.v_commentArea.mas_left);
-            make.right.mas_equalTo (self.v_commentArea.mas_right);
+            make.left.mas_equalTo (self.v_commentArea.mas_left).offset(10);
+            make.right.mas_equalTo (self.v_commentArea.mas_right).offset(-10);
             if(i == 0) {
                 make.top.equalTo(self.v_commentArea.mas_top).offset(10);
             }
@@ -141,10 +141,7 @@
                 make.top.equalTo(lb_lastOne ? lb_lastOne.mas_bottom: @0).offset(10);
             }
         }];
-        lb_lastOne = lb_comment;
-        dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-            NSLog(@"=======%d___%@",i,lb_lastOne);
-        });
+        lb_lastOne = lb_comment;//get last text label
     }
     
     [self.v_commentArea mas_updateConstraints:^(MASConstraintMaker *make) {
@@ -192,7 +189,7 @@
 // calculate height based on input data  - cache height
 - (CGFloat)heightForModel:(WaMoment *)message {
     [self setMoment:message];
-    float height = MAX(CGRectGetMaxY(self.imv_avatar.frame), CGRectGetMaxY(self.v_commentArea.frame)); //get last widget frame
+    float height = MAX(CGRectGetMaxY(self.imv_avatar.frame), CGRectGetMaxY(self.lb_time.frame)); //get last widget frame
     return height + 10;
 }
 
