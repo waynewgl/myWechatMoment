@@ -153,32 +153,32 @@
         [self.v_commentArea addSubview:lb_name];
 
         [lb_name mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.v_commentArea.mas_left).offset(10);
-            make.width.mas_greaterThanOrEqualTo(60);
-            make.width.mas_lessThanOrEqualTo(100);
+            make.left.equalTo(self.v_commentArea.mas_left).offset(default_offset);
+            make.width.mas_greaterThanOrEqualTo(min_label_width);
+            make.width.mas_lessThanOrEqualTo(label_width);
             if(i == 0) {
-                make.top.equalTo(self.v_commentArea.mas_top).offset(10);
+                make.top.equalTo(self.v_commentArea.mas_top).offset(default_offset);
             }
             else {
-                make.top.equalTo(lb_lastOne ? lb_lastOne.mas_bottom: @0).offset(10);
+                make.top.equalTo(lb_lastOne ? lb_lastOne.mas_bottom: @0).offset(default_offset);
             }
         }];
         
         [lb_comment mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(lb_name.mas_right).offset(5);
-            make.right.equalTo(self.v_commentArea.mas_right).offset(-10);
+            make.right.equalTo(self.v_commentArea.mas_right).offset(0 - default_offset);
             if(i == 0) {
-                make.top.equalTo(self.v_commentArea.mas_top).offset(10);
+                make.top.equalTo(self.v_commentArea.mas_top).offset(default_offset);
             }
             else {
-                make.top.equalTo(lb_lastOne ? lb_lastOne.mas_bottom: @0).offset(10);
+                make.top.equalTo(lb_lastOne ? lb_lastOne.mas_bottom: @0).offset(default_offset);
             }
         }];
         lb_lastOne = lb_comment;//keep last text label
     }
 
     [self.v_commentArea mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(lb_lastOne.mas_bottom).offset(10);
+        make.bottom.equalTo(lb_lastOne.mas_bottom).offset(default_offset);
     }];
 }
 
@@ -209,7 +209,7 @@
         
         if (i == arr_items.count-1) {//adjust gridview container height
             [self.v_gridView mas_updateConstraints:^(MASConstraintMaker *make) {
-                make.bottom.equalTo(imv_item.mas_bottom).offset(0);
+                make.bottom.equalTo(imv_item.mas_bottom);
             }];
         }
     }
@@ -224,7 +224,6 @@
     [self setMoment:message];
     [self.contentView layoutIfNeeded];
     float height = MAX(CGRectGetMaxY(self.imv_avatar.frame), CGRectGetMaxY(self.lb_time.frame)); //get last widget frame
-    NSLog(@"getting height for model %@", self.lb_time);
     return height + 10;
 }
 

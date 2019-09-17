@@ -14,6 +14,7 @@
 
 #define label_height 30
 #define label_width 100
+#define min_label_width 60
 
 //cell avatar
 #define avatar_width 50

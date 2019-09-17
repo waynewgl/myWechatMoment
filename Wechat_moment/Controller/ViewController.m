@@ -129,7 +129,7 @@ static NSString *identifier = @"WaTableViewCell";
 - (void)loadUserTweetsWithLoadMore:(BOOL)isLoadMore {
     [[WaNetworkClient sharedNetworkManager] getWechatTweetWithCompletionBlock:^(BOOL isSuccess, NSString *desc, NSString *code, NSArray *arr_tweets) {
         if(isSuccess) {
-            //Backend is usuall RestFul APi, so load more usually need 'page' , or 'size' to get specific range of data, and add into array.
+            //Backend is usuall RestFul APIs, so load more usually need 'page' , or 'size' to get specific range of data, and add into array.
             self.mar_moments = [arr_tweets mutableCopy];
             [self.tbv_moment reloadData];
         }
@@ -152,7 +152,7 @@ static NSString *identifier = @"WaTableViewCell";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     switch (indexPath.row) {
         case 0:
-            self.tbv_moment.separatorStyle = UITableViewCellSeparatorStyleNone;
+            _cell_headerView.separatorInset = UIEdgeInsetsMake(0, _cell_headerView.frame.size.width, 0, 0);
             return _cell_headerView;
         default: {
             WaTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
@@ -160,7 +160,6 @@ static NSString *identifier = @"WaTableViewCell";
                 cell = [[WaTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
             }
-            self.tbv_moment.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
             WaMoment *moment = self.mar_moments[indexPath.row - 1];
             cell.moment = moment;
             return cell;
