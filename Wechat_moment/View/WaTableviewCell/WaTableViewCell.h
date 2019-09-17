@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) UIImageView *imv_avatar;
 @property (nonatomic, strong) UILabel *lb_time;
-@property (nonatomic, strong) UILabel *lb_text;
+@property (nonatomic, strong) UILabel *lb_content;
 @property (nonatomic, strong) UILabel *lb_location;
 @property (nonatomic, strong) UIButton *btn_nickname;
 @property (nonatomic, strong) UIView *v_gridView;

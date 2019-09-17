@@ -152,6 +152,7 @@ static NSString *identifier = @"WaTableViewCell";
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     switch (indexPath.row) {
         case 0:
+            self.tbv_moment.separatorStyle = UITableViewCellSeparatorStyleNone;
             return _cell_headerView;
         default: {
             WaTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
@@ -159,7 +160,7 @@ static NSString *identifier = @"WaTableViewCell";
                 cell = [[WaTableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
                 cell.selectionStyle = UITableViewCellSelectionStyleNone;
             }
-            
+            self.tbv_moment.separatorStyle = UITableViewCellSeparatorStyleSingleLine;
             WaMoment *moment = self.mar_moments[indexPath.row - 1];
             cell.moment = moment;
             return cell;

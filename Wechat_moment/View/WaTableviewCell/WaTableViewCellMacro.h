@@ -22,9 +22,9 @@
 //cell gridview config
 #define grid_view_offset_top 5
 #define grid_view_offset_right 70
-#define grid_item_row_count 3
-#define grid_item_width 70
-#define grid_item_height 70
+#define grid_item_row_count 4
+#define grid_item_width 60
+#define grid_item_height 60
 #define horizontal_space 10
 #define vertical_space 10
 

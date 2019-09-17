@@ -64,7 +64,7 @@
         if ([responseObject isKindOfClass:[NSArray class]]) {
             mar_tweet = [[NSMutableArray alloc] initWithCapacity:5];
             for(NSDictionary *dic_moment in responseObject) {
-                WaMoment *moment  = [[WaMoment alloc] initWithDict:dic_moment];//TODO: nested model
+                WaMoment *moment  = [[WaMoment alloc] initWithDict:dic_moment];//TODO: nested model mapping
                 [mar_tweet addObject:moment];
             }
         }

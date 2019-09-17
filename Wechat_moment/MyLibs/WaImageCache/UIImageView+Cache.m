@@ -53,6 +53,7 @@
         return;
     }
 
+    //download
     NSURLSessionDownloadTask *task = [[NSURLSession sharedSession] downloadTaskWithRequest:[NSURLRequest requestWithURL:url] completionHandler:^(NSURL * _Nullable location, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         
         if(!error){
@@ -65,6 +66,9 @@
                 self.image = [UIImage imageWithData:imageData];
             });
         }
+        
+        NSLog(@"reaching here...%@", error);
+
     }];
     [task resume];
 }
