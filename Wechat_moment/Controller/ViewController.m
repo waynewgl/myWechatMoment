@@ -22,7 +22,7 @@ static NSString *identifier = @"WaTableViewCell";
 
 
 @property (nonatomic, strong) UITableView *tbv_moment;
-@property (nonatomic, strong) NSArray *mar_moments;;
+@property (nonatomic, strong) NSMutableArray *mar_moments;
 @property (nonatomic, strong) UILabel *lb_userName;
 @property (nonatomic, strong) UIImageView *imv_headerBg;
 @property (nonatomic, strong) UIImageView *imv_avatar;
@@ -69,7 +69,6 @@ static NSString *identifier = @"WaTableViewCell";
     /***
      usually use 'page' or 'size' parameter to load more data,
      local simulation is to operate the array...NSMakeRange etc
-     I hope it is ok to just show the basic idea of it for now.
      ***/
     self.tbv_moment.mj_footer = [MJRefreshBackNormalFooter footerWithRefreshingBlock:^{
         [self loadUserTweetsWithLoadMore:true];//load more
@@ -108,8 +107,10 @@ static NSString *identifier = @"WaTableViewCell";
 
 //request user info
 - (void)loadUserInfo {
-    [SVProgressHUD showWithStatus:@"loading..."];
-    [[WaNetworkClient sharedNetworkManager] getUserInfoWithCompletionBlock:^(BOOL isSuccess, NSString *desc, NSString *code, WaUser *user) {
+//    [SVProgressHUD showWithStatus:@"loading..."];
+    
+    //network data
+    /*[[WaNetworkClient sharedNetworkManager] getUserInfoWithCompletionBlock:^(BOOL isSuccess, NSString *desc, NSString *code, WaUser *user) {
         if(isSuccess) {
             self.lb_userName.text = user.nick;
             [self.imv_avatar setImageWithURL:[NSURL URLWithString:user.avatar] placeholderImage:[UIImage imageNamed:@"img_avatar"]];
@@ -122,12 +123,20 @@ static NSString *identifier = @"WaTableViewCell";
             [SVProgressHUD showErrorWithStatus:@"Network error"];
         }
         
-    }];
+    }];*/
+ 
+    //test data
+    self.lb_userName.text = @"WAY";
+    [self.imv_avatar setImageWithURL:[NSURL URLWithString:@""] placeholderImage:[UIImage imageNamed:@"img_avatar"]];
+    [self.imv_headerBg setImageWithURL:[NSURL URLWithString:@""] placeholderImage:[UIImage imageNamed:@"img_avatar"]];
+    [self.cell_headerView.contentView layoutIfNeeded];
+    [self.tbv_moment reloadData];
 }
 
 //request user tweets
 - (void)loadUserTweetsWithLoadMore:(BOOL)isLoadMore {
-    [[WaNetworkClient sharedNetworkManager] getWechatTweetWithCompletionBlock:^(BOOL isSuccess, NSString *desc, NSString *code, NSArray *arr_tweets) {
+    //network data
+    /*[[WaNetworkClient sharedNetworkManager] getWechatTweetWithCompletionBlock:^(BOOL isSuccess, NSString *desc, NSString *code, NSArray *arr_tweets) {
         if(isSuccess) {
             //Backend is usuall RestFul APIs, so load more usually need 'page' , or 'size' to get specific range of data, and add into array.
             self.mar_moments = [arr_tweets mutableCopy];
@@ -137,7 +146,46 @@ static NSString *identifier = @"WaTableViewCell";
             [SVProgressHUD showErrorWithStatus:@"Network error"];
         }
         [self.tbv_moment.mj_header endRefreshing];
-    }];
+    }];*/
+    
+    //test data
+    if(!self.mar_moments) {
+        self.mar_moments = [[NSMutableArray alloc] initWithCapacity:5];
+    }
+    for(int i = 0; i< 10; i ++) {
+        WaMoment *moment = [[WaMoment alloc] init];
+        moment.nickName = @"Kevin";
+        moment.content = @"Kevin";
+        moment.time = @"two hours ago";
+        moment.location = @"FUZHOU";
+        
+        NSMutableDictionary *dic_image = [[NSMutableDictionary alloc] init];
+        [dic_image setObject:@"http://i.ytimg.com/vi/rGWI7mjmnNk/hqdefault.jpg" forKey:@"url"];
+        
+        NSMutableDictionary *dic_image1 = [[NSMutableDictionary alloc] init];
+        [dic_image1 setObject:@"http://i.ytimg.com/vi/rGWI7mjmnNk/hqdefault.jpg" forKey:@"url"];
+        
+        moment.images = [NSArray arrayWithObjects:dic_image,dic_image1, nil];
+        
+        NSMutableDictionary *dic_comment = [[NSMutableDictionary alloc] init];
+        if(i%2 == 0) {
+            [dic_comment setObject:@"I have no comment I have no commentI have no commentI have no commentI have no commentI have no comment" forKey:@"content"];
+        }
+        else {
+            [dic_comment setObject:@"I have no comment" forKey:@"content"];
+        }
+
+        NSMutableDictionary *dic_sender = [[NSMutableDictionary alloc] init];
+        [dic_sender setObject:@"John" forKey:@"nick"];
+        
+        [dic_comment setObject:dic_sender forKey:@"sender"];
+
+        moment.comments = [NSArray arrayWithObjects:dic_comment, nil];
+        
+        [self.mar_moments addObject:moment];
+    }
+
+    [self.tbv_moment reloadData];
 }
 
 #pragma mark - UITableViewDataSource

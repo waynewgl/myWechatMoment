@@ -11,7 +11,7 @@
 #import "WaMoment.h"
 #import "objc/runtime.h"
 
-#define base_url @"http://thoughtworks-ios.herokuapp.com"
+#define base_url @"https://mall.conchshop.cn"
 
 @implementation WaNetworkClient
 
@@ -44,8 +44,7 @@
 }
 
 - (void)getUserInfoWithCompletionBlock:(void (^)(BOOL isSuccess, NSString *desc, NSString *code, WaUser *user))completionBlock {
- 
-    [self GET:@"/user/jsmith/" parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
+    [self GET:@"/user/1/" parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSDictionary *JSON = responseObject;
         NSLog(@"getting user info obj %@", JSON);
@@ -57,8 +56,7 @@
 }
 
 - (void)getWechatTweetWithCompletionBlock:(void (^)(BOOL isSuccess, NSString *desc, NSString *code, NSArray *arr_tweets))completionBlock {
-    
-    [self GET:@"/user/jsmith/tweets/" parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
+    [self GET:@"/user/1/tweets/" parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSMutableArray *mar_tweet;
         if ([responseObject isKindOfClass:[NSArray class]]) {
