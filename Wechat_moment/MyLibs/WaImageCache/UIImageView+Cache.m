@@ -53,8 +53,8 @@
         return;
     }
 
+    //download
     NSURLSessionDownloadTask *task = [[NSURLSession sharedSession] downloadTaskWithRequest:[NSURLRequest requestWithURL:url] completionHandler:^(NSURL * _Nullable location, NSURLResponse * _Nullable response, NSError * _Nullable error) {
-        
         if(!error){
             NSURL *fileURL = [NSURL fileURLWithPath:file];
             [[NSFileManager defaultManager] copyItemAtURL:location toURL:fileURL error:nil];
@@ -63,6 +63,11 @@
             
             dispatch_async(dispatch_get_main_queue(), ^{
                 self.image = [UIImage imageWithData:imageData];
+            });
+        }
+        else{
+            dispatch_async(dispatch_get_main_queue(), ^{
+                self.image = image;
             });
         }
     }];

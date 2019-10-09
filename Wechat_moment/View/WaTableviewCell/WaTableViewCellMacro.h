@@ -12,9 +12,9 @@
 #define default_offset 10
 #define default_offset_minor 5
 
-//cell user name
-#define userName_width 100
-#define userName_height 30
+#define label_height 30
+#define label_width 100
+#define min_label_width 60
 
 //cell avatar
 #define avatar_width 50
@@ -23,9 +23,9 @@
 //cell gridview config
 #define grid_view_offset_top 5
 #define grid_view_offset_right 70
-#define grid_item_row_count 3
-#define grid_item_width 70
-#define grid_item_height 70
+#define grid_item_row_count 4
+#define grid_item_width 60
+#define grid_item_height 60
 #define horizontal_space 10
 #define vertical_space 10
 

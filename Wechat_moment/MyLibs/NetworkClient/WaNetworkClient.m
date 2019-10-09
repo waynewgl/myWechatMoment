@@ -11,7 +11,7 @@
 #import "WaMoment.h"
 #import "objc/runtime.h"
 
-#define base_url @"http://thoughtworks-ios.herokuapp.com"
+#define base_url @"https://mall.conchshop.cn"
 
 @implementation WaNetworkClient
 
@@ -24,7 +24,6 @@
     
     return manager;
 }
-
 
 #pragma mark - Internal methods
 - (id)initWithBaseURL:(NSURL *)url {
@@ -45,8 +44,7 @@
 }
 
 - (void)getUserInfoWithCompletionBlock:(void (^)(BOOL isSuccess, NSString *desc, NSString *code, WaUser *user))completionBlock {
- 
-    [self GET:@"/user/jsmith/" parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
+    [self GET:@"/user/1/" parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSDictionary *JSON = responseObject;
         NSLog(@"getting user info obj %@", JSON);
@@ -58,14 +56,13 @@
 }
 
 - (void)getWechatTweetWithCompletionBlock:(void (^)(BOOL isSuccess, NSString *desc, NSString *code, NSArray *arr_tweets))completionBlock {
-    
-    [self GET:@"/user/jsmith/tweets/" parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
+    [self GET:@"/user/1/tweets/" parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
     } success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
         NSMutableArray *mar_tweet;
         if ([responseObject isKindOfClass:[NSArray class]]) {
             mar_tweet = [[NSMutableArray alloc] initWithCapacity:5];
             for(NSDictionary *dic_moment in responseObject) {
-                WaMoment *moment  = [[WaMoment alloc] initWithDict:dic_moment];//TODO: nested model
+                WaMoment *moment  = [[WaMoment alloc] initWithDict:dic_moment];//TODO: nested model mapping
                 [mar_tweet addObject:moment];
             }
         }
