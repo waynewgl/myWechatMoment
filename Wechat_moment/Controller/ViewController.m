@@ -161,10 +161,8 @@ static NSString *identifier = @"WaTableViewCell";
         
         NSMutableDictionary *dic_image = [[NSMutableDictionary alloc] init];
         [dic_image setObject:@"http://i.ytimg.com/vi/rGWI7mjmnNk/hqdefault.jpg" forKey:@"url"];
-        
         NSMutableDictionary *dic_image1 = [[NSMutableDictionary alloc] init];
         [dic_image1 setObject:@"http://i.ytimg.com/vi/rGWI7mjmnNk/hqdefault.jpg" forKey:@"url"];
-        
         moment.images = [NSArray arrayWithObjects:dic_image,dic_image1, nil];
         
         NSMutableDictionary *dic_comment = [[NSMutableDictionary alloc] init];
@@ -179,7 +177,6 @@ static NSString *identifier = @"WaTableViewCell";
         [dic_sender setObject:@"John" forKey:@"nick"];
         
         [dic_comment setObject:dic_sender forKey:@"sender"];
-
         moment.comments = [NSArray arrayWithObjects:dic_comment, nil];
         
         [self.mar_moments addObject:moment];
