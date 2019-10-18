@@ -9,9 +9,10 @@
 #import "WaNetworkClient.h"
 #import "WaUser.h"
 #import "WaMoment.h"
-#import "objc/runtime.h"
+#import "NSObject+ModelMap.h"
 
-#define base_url @"https://mall.conchshop.cn"
+
+#define base_url @"http://xxx.com"
 
 @implementation WaNetworkClient
 

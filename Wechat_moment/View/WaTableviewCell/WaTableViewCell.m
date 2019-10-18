@@ -140,6 +140,7 @@
         lb_comment.preferredMaxLayoutWidth = 300;
         [lb_comment setContentHuggingPriority:UILayoutPriorityRequired forAxis:UILayoutConstraintAxisVertical];
         lb_comment.numberOfLines = 0;
+        lb_comment.textAlignment = NSTextAlignmentLeft;
         [lb_comment setTextColor:[UIColor colorWithRed:54.0f/255.0f green:54.0f/255.0f blue:54.0f/255.0f alpha:1.0]];
         lb_comment.font = [UIFont systemFontOfSize:14];
         [self.v_commentArea addSubview:lb_comment];
@@ -154,8 +155,7 @@
 
         [lb_name mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.v_commentArea.mas_left).offset(default_offset);
-            make.width.mas_greaterThanOrEqualTo(min_label_width);
-            make.width.mas_lessThanOrEqualTo(label_width);
+            make.width.mas_equalTo(label_width);
             if(i == 0) {
                 make.top.equalTo(self.v_commentArea.mas_top).offset(default_offset);
             }
