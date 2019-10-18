@@ -17,8 +17,6 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *avatar;
 @property (nonatomic, copy) NSString *profile_image;
 
-- (instancetype)initWithDict:(NSDictionary *)dict;
-
 @end
 
 NS_ASSUME_NONNULL_END

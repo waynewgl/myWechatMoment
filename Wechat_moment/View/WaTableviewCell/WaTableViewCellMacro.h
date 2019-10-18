@@ -13,8 +13,8 @@
 #define default_offset_minor 5
 
 #define label_height 30
-#define label_width 100
-#define min_label_width 60
+#define label_width 50
+#define min_label_width 20
 
 //cell avatar
 #define avatar_width 50

@@ -15,6 +15,7 @@
 #import "UIImageView+Cache.h"
 #import "MJRefresh.h"
 #import "SVProgressHUD.h"
+#import "NSObject+ModelMap.h"
 
 static NSString *identifier = @"WaTableViewCell";
 
@@ -107,7 +108,7 @@ static NSString *identifier = @"WaTableViewCell";
 
 //request user info
 - (void)loadUserInfo {
-//    [SVProgressHUD showWithStatus:@"loading..."];
+    //SVProgressHUD showWithStatus:@"loading..."];
     
     //network data
     /*[[WaNetworkClient sharedNetworkManager] getUserInfoWithCompletionBlock:^(BOOL isSuccess, NSString *desc, NSString *code, WaUser *user) {
@@ -148,6 +149,10 @@ static NSString *identifier = @"WaTableViewCell";
         [self.tbv_moment.mj_header endRefreshing];
     }];*/
     
+    [self addTestData];
+}
+
+- (void)addTestData {
     //test data
     if(!self.mar_moments) {
         self.mar_moments = [[NSMutableArray alloc] initWithCapacity:5];
@@ -156,15 +161,18 @@ static NSString *identifier = @"WaTableViewCell";
         WaMoment *moment = [[WaMoment alloc] init];
         moment.nickName = @"Kevin";
         moment.content = @"Kevin";
-        moment.time = @"two hours ago";
+        moment.time = @"Two hours ago";
         moment.location = @"FUZHOU";
         
-        NSMutableDictionary *dic_image = [[NSMutableDictionary alloc] init];
-        [dic_image setObject:@"http://i.ytimg.com/vi/rGWI7mjmnNk/hqdefault.jpg" forKey:@"url"];
-        NSMutableDictionary *dic_image1 = [[NSMutableDictionary alloc] init];
-        [dic_image1 setObject:@"http://i.ytimg.com/vi/rGWI7mjmnNk/hqdefault.jpg" forKey:@"url"];
-        moment.images = [NSArray arrayWithObjects:dic_image,dic_image1, nil];
-        
+        NSMutableArray *mar_images = [[NSMutableArray alloc] init];
+        for(int j = 0; j< i+1; j++) {
+            NSMutableDictionary *dic_image = [[NSMutableDictionary alloc] init];
+            [dic_image setObject:@"http://i.ytimg.com/vi/rGWI7mjmnNk/hqdefault.jpg" forKey:@"url"];
+            [mar_images addObject:dic_image];
+        }
+        moment.images = mar_images;
+
+        //comment 1
         NSMutableDictionary *dic_comment = [[NSMutableDictionary alloc] init];
         if(i%2 == 0) {
             [dic_comment setObject:@"I have no comment I have no commentI have no commentI have no commentI have no commentI have no comment" forKey:@"content"];
@@ -173,15 +181,29 @@ static NSString *identifier = @"WaTableViewCell";
             [dic_comment setObject:@"I have no comment" forKey:@"content"];
         }
 
+
         NSMutableDictionary *dic_sender = [[NSMutableDictionary alloc] init];
         [dic_sender setObject:@"John" forKey:@"nick"];
-        
         [dic_comment setObject:dic_sender forKey:@"sender"];
-        moment.comments = [NSArray arrayWithObjects:dic_comment, nil];
+        
+        //comment 2
+        NSMutableDictionary *dic_comment2 = [[NSMutableDictionary alloc] init];
+        if(i%2 == 0) {
+            [dic_comment2 setObject:@"I have no comment" forKey:@"content"];
+        }
+        else {
+            
+            [dic_comment2 setObject:@"Wayne have no comment I have no commentI have no commentI have no commentI have no commentI have no comment" forKey:@"content"];
+        }
+        NSMutableDictionary *dic_sender2 = [[NSMutableDictionary alloc] init];
+        [dic_sender2 setObject:@"wayne" forKey:@"nick"];
+        
+        [dic_comment2 setObject:dic_sender2 forKey:@"sender"];
+        moment.comments = [NSArray arrayWithObjects:dic_comment,dic_comment2, nil];
         
         [self.mar_moments addObject:moment];
     }
-
+    
     [self.tbv_moment reloadData];
 }
 
@@ -217,7 +239,7 @@ static NSString *identifier = @"WaTableViewCell";
     if(indexPath.row == 0) {
         return CGRectGetMaxY(self.imv_avatar.frame);//get last widget frame
     }
-    else {
+    else {//cache dynamic cell height
         WaMoment *moment = self.mar_moments[indexPath.row -1];
         if (moment.cellHeight == 0) {
             CGFloat cellHeight = [self.tempCell heightForModel:self.mar_moments[indexPath.row - 1]];
